@@ -4,6 +4,8 @@ I am trying to recreate the intel 8080 processor virtually, the goal is to just 
 Following this: [https://web.archive.org/web/20180517181048/http://nemesis.lonestar.org/computers/tandy/software/apps/m4/qd/opcodes.txt
 ](https://web.archive.org/web/20180517181048/http://nemesis.lonestar.org/computers/tandy/software/apps/m4/qd/opcodes.txt)
 
+Trying to do this essentially - https://github.com/tdinucci/6502-emulator/  but for i8080 // Dont ask why
+
 ### Goal:
 - simulate a processor?
 - Make a processor + memory + minimal i/o support

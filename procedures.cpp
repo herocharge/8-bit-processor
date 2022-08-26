@@ -24,13 +24,13 @@ void MOVAL_0x7D(Registers& registers, Memory& memory, Stack& stack){
     registers.A = registers.L;
 }
 void MOVAM_0x7E(Registers& registers, Memory& memory, Stack& stack){
-    registers.A = memory.get_word((((addr_t)registers.H) << sizeof(word_t)) + registers.L); 
+    registers.A = memory.get_word((((addr_t)registers.H) << (8 * sizeof(word_t))) + registers.L); 
 }
 void LDAXB_0x0A(Registers& registers, Memory& memory, Stack& stack){
-    registers.A = memory.get_word((((addr_t)registers.B) << sizeof(word_t)) + registers.C); 
+    registers.A = memory.get_word((((addr_t)registers.B) << (8 * sizeof(word_t))) + registers.C); 
 }
 void LDAXD_0x1A(Registers& registers, Memory& memory, Stack& stack){
-    registers.A = memory.get_word((((addr_t)registers.D) << sizeof(word_t) )+ registers.E); 
+    registers.A = memory.get_word((((addr_t)registers.D) << (8 * sizeof(word_t)) )+ registers.E); 
 }
 void LDA_0x3Aword(Registers& registers, Memory& memory, Stack& stack, word_t word){
     registers.A = memory.get_word(word); 
@@ -59,7 +59,7 @@ void MOVBL_0x45(Registers& registers, Memory& memory, Stack& stack){
     registers.B = registers.L;
 }
 void MOVBM_0x46(Registers& registers, Memory& memory, Stack& stack){
-    registers.B = memory.get_word((((addr_t)registers.H) << sizeof(word_t)) + registers.L); 
+    registers.B = memory.get_word((((addr_t)registers.H) << (8 * sizeof(word_t))) + registers.L); 
 }
 
 void MOVCA_0x4F(Registers& registers, Memory& memory, Stack& stack){
@@ -84,7 +84,7 @@ void MOVCL_0x4D(Registers& registers, Memory& memory, Stack& stack){
     registers.C = registers.L;
 }
 void MOVCM_0x4E(Registers& registers, Memory& memory, Stack& stack){
-    registers.C = memory.get_word((((addr_t)registers.H) << sizeof(word_t)) + registers.L); 
+    registers.C = memory.get_word((((addr_t)registers.H) << (8 * sizeof(word_t))) + registers.L); 
 }
 
 void MOVDA_0x57(Registers& registers, Memory& memory, Stack& stack){
@@ -109,7 +109,7 @@ void MOVDL_0x55(Registers& registers, Memory& memory, Stack& stack){
     registers.D = registers.L;
 }
 void MOVDM_0x56(Registers& registers, Memory& memory, Stack& stack){
-    registers.D = memory.get_word((((addr_t)registers.H) << sizeof(word_t)) + registers.L); 
+    registers.D = memory.get_word((((addr_t)registers.H) << (8 * sizeof(word_t))) + registers.L); 
 }
 
 void MOVEA_0x5F(Registers& registers, Memory& memory, Stack& stack){
@@ -134,7 +134,7 @@ void MOVEL_0x5D(Registers& registers, Memory& memory, Stack& stack){
     registers.E = registers.L;
 }
 void MOVEM_0x5E(Registers& registers, Memory& memory, Stack& stack){
-    registers.E = memory.get_word((((addr_t)registers.H) << sizeof(word_t)) + registers.L); 
+    registers.E = memory.get_word((((addr_t)registers.H) << (8 * sizeof(word_t))) + registers.L); 
 }
 
 void MOVHA_0x67(Registers& registers, Memory& memory, Stack& stack){
@@ -159,7 +159,7 @@ void MOVHL_0x65(Registers& registers, Memory& memory, Stack& stack){
     registers.H = registers.L;
 }
 void MOVHM_0x66(Registers& registers, Memory& memory, Stack& stack){
-    registers.H = memory.get_word((((addr_t)registers.H) << sizeof(word_t)) + registers.L); 
+    registers.H = memory.get_word((((addr_t)registers.H) << (8 * sizeof(word_t))) + registers.L); 
 }
 
 void MOVLA_0x6F(Registers& registers, Memory& memory, Stack& stack){
@@ -184,35 +184,35 @@ void MOVLL_0x6D(Registers& registers, Memory& memory, Stack& stack){
     registers.L = registers.L;
 }
 void MOVLM_0x6E(Registers& registers, Memory& memory, Stack& stack){
-    registers.L = memory.get_word((((addr_t)registers.H) << sizeof(word_t)) + registers.L); 
+    registers.L = memory.get_word((((addr_t)registers.H) << (8 * sizeof(word_t))) + registers.L); 
 }
 
 void MOVMA_0x77(Registers& registers, Memory& memory, Stack& stack){
-    addr_t addr = (((addr_t)registers.H) << sizeof(word_t)) + registers.L;
+    addr_t addr = (((addr_t)registers.H) << (8 * sizeof(word_t))) + registers.L;
     memory.set_word(addr, registers.A);
 }
 void MOVMB_0x70(Registers& registers, Memory& memory, Stack& stack){
-    addr_t addr = (((addr_t)registers.H) << sizeof(word_t)) + registers.L;
+    addr_t addr = (((addr_t)registers.H) << (8 * sizeof(word_t))) + registers.L;
     memory.set_word(addr, registers.B);
 }
 void MOVMC_0x71(Registers& registers, Memory& memory, Stack& stack){
-    addr_t addr = (((addr_t)registers.H) << sizeof(word_t)) + registers.L;
+    addr_t addr = (((addr_t)registers.H) << (8 * sizeof(word_t))) + registers.L;
     memory.set_word(addr, registers.C);
 }
 void MOVMD_0x72(Registers& registers, Memory& memory, Stack& stack){
-    addr_t addr = (((addr_t)registers.H) << sizeof(word_t)) + registers.L;
+    addr_t addr = (((addr_t)registers.H) << (8 * sizeof(word_t))) + registers.L;
     memory.set_word(addr, registers.D);
 }
 void MOVME_0x73(Registers& registers, Memory& memory, Stack& stack){
-    addr_t addr = (((addr_t)registers.H) << sizeof(word_t)) + registers.L;
+    addr_t addr = (((addr_t)registers.H) << (8 * sizeof(word_t))) + registers.L;
     memory.set_word(addr, registers.E);
 }
 void MOVMH_0x74(Registers& registers, Memory& memory, Stack& stack){
-    addr_t addr = (((addr_t)registers.H) << sizeof(word_t)) + registers.L;
+    addr_t addr = (((addr_t)registers.H) << (8 * sizeof(word_t))) + registers.L;
     memory.set_word(addr, registers.H);
 }
 void MOVML_0x75(Registers& registers, Memory& memory, Stack& stack){
-    addr_t addr = (((addr_t)registers.H) << sizeof(word_t)) + registers.L;
+    addr_t addr = (((addr_t)registers.H) << (8 * sizeof(word_t))) + registers.L;
     memory.set_word(addr, registers.L);
 }
 
@@ -238,16 +238,16 @@ void MVIL_0x2Eword(Registers& registers, Memory& memory, Stack& stack, word_t wo
     registers.L = word;
 }
 void MVIM_0x36word(Registers& registers, Memory& memory, Stack& stack, word_t word){
-    addr_t addr = (((addr_t)registers.H) << sizeof(word_t)) + registers.L;
+    addr_t addr = (((addr_t)registers.H) << (8 * sizeof(word_t))) + registers.L;
     memory.set_word(addr, word);
 }
 
 void STAXB_0x02(Registers& registers, Memory& memory, Stack& stack){
-    addr_t addr = (((addr_t)registers.B) << sizeof(word_t)) + registers.C;
+    addr_t addr = (((addr_t)registers.B) << (8 * sizeof(word_t))) + registers.C;
     memory.set_word(addr, registers.A);
 }
 void STAXD_0x12(Registers& registers, Memory& memory, Stack& stack){
-    addr_t addr = (((addr_t)registers.D) << sizeof(word_t)) + registers.E;
+    addr_t addr = (((addr_t)registers.D) << (8 * sizeof(word_t))) + registers.E;
     memory.set_word(addr, registers.A);
 }
 
