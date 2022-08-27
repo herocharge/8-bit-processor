@@ -4,7 +4,7 @@ Program_counter::Program_counter(addr_t init_val){
     program_counter = init_val;
 }
 
-word_t Program_counter::get_pc(){
+addr_t Program_counter::get_pc(){
     return program_counter;
 }
 

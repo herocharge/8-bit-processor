@@ -8,7 +8,6 @@ typedef uint8_t word_t;
 typedef uint16_t addr_t;
 typedef uint8_t error_t;
 typedef struct Registers Registers;
-typedef struct stack Stack;
 struct Registers
 {
     word_t A;
