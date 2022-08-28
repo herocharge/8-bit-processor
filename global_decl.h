@@ -3,6 +3,7 @@
 
 #include <vector>
 #include <cstdint>
+#include <assert.h>
 
 typedef uint8_t word_t;
 typedef uint16_t addr_t;
@@ -18,7 +19,7 @@ struct Registers
     word_t H;
     word_t L;
 };
-typedef void (*voidFunctionType)(void);
+typedef void (*voidFunctionType)(Registers& registers, std::vector<bool>& flags, Memory& memory, Stack& stack, Program_counter& pc, word_t word1, word_t word2);
 
 enum flags {
     SIGN = 7,// S - Sign Flag
