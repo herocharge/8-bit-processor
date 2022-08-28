@@ -102,7 +102,7 @@ void MVIM_0x36word(Registers& registers, std::vector<bool>& flags, Memory& memor
 void STAXB_0x02(Registers& registers, std::vector<bool>& flags, Memory& memory, Stack& stack, Program_counter& pc, word_t word1, word_t word2);
 void STAXD_0x12(Registers& registers, std::vector<bool>& flags, Memory& memory, Stack& stack, Program_counter& pc, word_t word1, word_t word2);
 
-void STA_0x32word(Registers& registers, std::vector<bool>& flags, Memory& memory, Stack& stack, Program_counter& pc, word_t word1, word_t word2);
+void  STA_0x32doubleword(Registers& registers, std::vector<bool>& flags, Memory& memory, Stack& stack, Program_counter& pc, word_t word1, word_t word2);
 
 // TODO: implement LXI and 16 bit transfer instructions // done
 

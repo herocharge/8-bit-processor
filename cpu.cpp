@@ -1,6 +1,6 @@
 #include "cpu.h"
 #include "memory.h"
-
+#include <iostream>
 CPU::CPU() : stack(memory){
     memory = Memory(0xFFFF);
     pc = Program_counter(0);
@@ -20,8 +20,10 @@ error_t CPU::execute(addr_t start){
     pc = Program_counter(start);
     while(true){
         word_t instruction = fetch();
+        std::cout<<(int)instruction<<" ";
         if(instruction == 0x76)break;
         int param_count = opcode_handler.get_opcode_pcount(instruction);
+        std::cout<<(int)param_count<<std::endl;
         voidFunctionType procedure = opcode_handler.get_opcode_procedure(instruction);
         if(param_count == 0){
             procedure(registers, flags, memory, stack, pc, 0, 0);

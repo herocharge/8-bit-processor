@@ -1,5 +1,5 @@
 #include "procedures.h"
-
+#include <iostream>
 addr_t wtod(word_t a, word_t b){
     return (((addr_t)a) << (8 * sizeof(word_t))) + b;
 }
@@ -19,8 +19,9 @@ bool is_neg(word_t w){
     return (get_bit(w, 7));
 }
 
-void set_cmp_flags(std::vector<bool>& flags, word_t a, word_t b, word_t res){
+void set_cmp_flags(std::vector<bool>& flags, word_t res, word_t a, word_t b){
     flags[SIGN] = is_neg(res);
+    std::cout<<(int)(a < b)<<std::endl;
     flags[CARRY] = (a < b);
     flags[ZERO] = (res == 0);
     flags[PARITY] = (res&1);
@@ -276,8 +277,8 @@ void STAXD_0x12(Registers& registers, std::vector<bool>& flags, Memory& memory, 
     memory.set_word(addr, registers.A);
 }
 
-void STA_0x32word(Registers& registers, std::vector<bool>& flags, Memory& memory, Stack& stack, Program_counter& pc, word_t word1, word_t word2){
-    memory.set_word(word1, registers.A);
+void STA_0x32doubleword(Registers& registers, std::vector<bool>& flags, Memory& memory, Stack& stack, Program_counter& pc, word_t word1, word_t word2){
+    memory.set_word(wtod(word1, word2), registers.A);
 }
 
 // TODO: implement LXI and 16 bit transfer instructions // done
@@ -712,6 +713,9 @@ void CMPM_0xBE(Registers& registers, std::vector<bool>& flags, Memory& memory, S
 }
 void CPI_0xFEword(Registers& registers, std::vector<bool>& flags, Memory& memory, Stack& stack, Program_counter& pc, word_t word1, word_t word2){
     set_cmp_flags(flags, registers.A - word1, registers.A, word1);
+    std::cout<<(int)registers.A<<std::endl;
+    std::cout<<(int)word1<<std::endl;
+    std::cout<<(int)(registers.A < word1)<<std::endl;
 }
 
 void JMP_0xC3doubleword(Registers& registers, std::vector<bool>& flags, Memory& memory, Stack& stack, Program_counter& pc, word_t word1, word_t word2){
