@@ -2,6 +2,21 @@
 #include "memory.h"
 #include "stack.h"
 
+addr_t wtod(word_t a, word_t b){
+    return (((addr_t)a) << (8 * sizeof(word_t))) + b;
+}
+
+word_t higher_byte(addr_t a){
+    return a >> (sizeof(word_t) * 8);
+}
+word_t lower_byte(addr_t a){
+    return a &( (1 << (sizeof(word_t) * 8)) - 1);
+}
+
+int get_bit(word_t w, int pos){
+    return (w << (pos)) > 0;
+}
+
 void NOP_0x00(Registers& registers, std::vector<bool>& flags, Memory& memory, Stack& stack){}
 void MOVAA_0x7F(Registers& registers, std::vector<bool>& flags, Memory& memory, Stack& stack){
     registers.A = registers.A;
@@ -413,4 +428,220 @@ void SBBM_0x9E(Registers& registers, std::vector<bool>& flags, Memory& memory, S
 }
 void SBI_0xDE(Registers& registers, std::vector<bool>& flags, Memory& memory, Stack& stack, word_t word){
     registers.A -= word + flags[0];
+}
+
+void DADBC_0x09(Registers& registers, std::vector<bool>& flags, Memory& memory, Stack& stack){
+    addr_t one = wtod(registers.B, registers.C);
+    addr_t two = wtod(registers.H, registers.L);
+    two += one;
+    registers.H = higher_byte(two);
+    registers.L = lower_byte(two);
+}
+
+void DADDE_0x19(Registers& registers, std::vector<bool>& flags, Memory& memory, Stack& stack){
+    addr_t one = wtod(registers.D, registers.E);
+    addr_t two = wtod(registers.H, registers.L);
+    two += one;
+    registers.H = higher_byte(two);
+    registers.L = lower_byte(two);
+}
+
+void DADHL_0x29(Registers& registers, std::vector<bool>& flags, Memory& memory, Stack& stack){
+    addr_t one = wtod(registers.H, registers.L);
+    addr_t two = wtod(registers.H, registers.L);
+    two += one;
+    registers.H = higher_byte(two);
+    registers.L = lower_byte(two);
+}
+
+void DADSP_0x39(Registers& registers, std::vector<bool>& flags, Memory& memory, Stack& stack){
+    addr_t one = stack.get_sp();
+    addr_t two = wtod(registers.H, registers.L);
+    two += one;
+    registers.H = higher_byte(two);
+    registers.L = lower_byte(two);
+}
+
+// TODO: DI, EI, -> what are these?, HLT
+
+void INRA_0x3C(Registers& registers, std::vector<bool>& flags, Memory& memory, Stack& stack){
+    registers.A++;
+}
+void INRB_0x04(Registers& registers, std::vector<bool>& flags, Memory& memory, Stack& stack){
+    registers.B++;
+}
+void INRC_0x0C(Registers& registers, std::vector<bool>& flags, Memory& memory, Stack& stack){
+    registers.C++;
+}
+void INRD_0x14(Registers& registers, std::vector<bool>& flags, Memory& memory, Stack& stack){
+    registers.D++;
+}
+void INRE_0x1C(Registers& registers, std::vector<bool>& flags, Memory& memory, Stack& stack){
+    registers.E++;
+}
+void INRH_0x24(Registers& registers, std::vector<bool>& flags, Memory& memory, Stack& stack){
+    registers.H++;
+}
+void INRL_0x2C(Registers& registers, std::vector<bool>& flags, Memory& memory, Stack& stack){
+    registers.L++;
+}
+void INRM_0x34(Registers& registers, std::vector<bool>& flags, Memory& memory, Stack& stack){
+    addr_t addr = wtod(registers.H, registers.L);
+    word_t word = memory.get_word(addr);
+    memory.set_word(addr, word + 1);
+}
+
+void DCRA_0x3D(Registers& registers, std::vector<bool>& flags, Memory& memory, Stack& stack){
+    registers.A--;
+}
+void DCRB_0x05(Registers& registers, std::vector<bool>& flags, Memory& memory, Stack& stack){
+    registers.B--;
+}
+void DCRC_0x0D(Registers& registers, std::vector<bool>& flags, Memory& memory, Stack& stack){
+    registers.C--;
+}
+void DCRD_0x15(Registers& registers, std::vector<bool>& flags, Memory& memory, Stack& stack){
+    registers.D--;
+}
+void DCRE_0x1D(Registers& registers, std::vector<bool>& flags, Memory& memory, Stack& stack){
+    registers.E--;
+}
+void DCRH_0x25(Registers& registers, std::vector<bool>& flags, Memory& memory, Stack& stack){
+    registers.H--;
+}
+void DCRL_0x2D(Registers& registers, std::vector<bool>& flags, Memory& memory, Stack& stack){
+    registers.L--;
+}
+void DCRM_0x35(Registers& registers, std::vector<bool>& flags, Memory& memory, Stack& stack){
+    addr_t addr = wtod(registers.H, registers.L);
+    word_t word = memory.get_word(addr);
+    memory.set_word(addr, word - 1);
+}
+
+void INXBC_0x03(Registers& registers, std::vector<bool>& flags, Memory& memory, Stack& stack){
+    addr_t dword = wtod(registers.B, registers.C);
+    dword++;
+    registers.B = higher_byte(dword);
+    registers.C = higher_byte(dword);
+}
+void INXDE_0x13(Registers& registers, std::vector<bool>& flags, Memory& memory, Stack& stack){
+    addr_t dword = wtod(registers.D, registers.E);
+    dword++;
+    registers.D = higher_byte(dword);
+    registers.E = higher_byte(dword);
+}
+void INXHL_0x23(Registers& registers, std::vector<bool>& flags, Memory& memory, Stack& stack){
+    addr_t dword = wtod(registers.H, registers.L);
+    dword++;
+    registers.H = higher_byte(dword);
+    registers.L = higher_byte(dword);
+}
+void INXSP_0x33(Registers& registers, std::vector<bool>& flags, Memory& memory, Stack& stack){
+    addr_t dword = stack.get_sp();
+    dword++;
+    stack.assign(dword);
+}
+
+void DCXBC_0x0B(Registers& registers, std::vector<bool>& flags, Memory& memory, Stack& stack){
+    addr_t dword = wtod(registers.B, registers.C);
+    dword--;
+    registers.B = higher_byte(dword);
+    registers.C = higher_byte(dword);
+}
+void DCXDE_0x1B(Registers& registers, std::vector<bool>& flags, Memory& memory, Stack& stack){
+    addr_t dword = wtod(registers.D, registers.E);
+    dword--;
+    registers.D = higher_byte(dword);
+    registers.E = higher_byte(dword);
+}
+void DCXHL_0x2B(Registers& registers, std::vector<bool>& flags, Memory& memory, Stack& stack){
+    addr_t dword = wtod(registers.H, registers.L);
+    dword--;
+    registers.H = higher_byte(dword);
+    registers.L = higher_byte(dword);
+}
+void DCXSP_0x3B(Registers& registers, std::vector<bool>& flags, Memory& memory, Stack& stack){
+    addr_t dword = stack.get_sp();
+    dword--;
+    stack.assign(dword);
+}
+
+// TODO: Special Accumulator and Flag Instructions
+
+void RLC_0x07(Registers& registers, std::vector<bool>& flags, Memory& memory, Stack& stack){
+    flags[CARRY] = get_bit(registers.A, 7);
+    registers.A <<= 1;
+    registers.A |= flags[CARRY];
+}
+void RRC_0x0F(Registers& registers, std::vector<bool>& flags, Memory& memory, Stack& stack){
+    flags[CARRY] = get_bit(registers.A, 0);
+    registers.A >>= 1;
+    registers.A |= ((word_t)flags[CARRY] << 7);
+}
+void RAL_0x17(Registers& registers, std::vector<bool>& flags, Memory& memory, Stack& stack){
+    flags[CARRY] = get_bit(registers.A, 7);
+    registers.A <<= 1;
+}
+void RAR_0x1F(Registers& registers, std::vector<bool>& flags, Memory& memory, Stack& stack){
+    flags[CARRY] = get_bit(registers.A, 0);
+    registers.A >>= 1;
+}
+
+
+void ANAA_0xA7(Registers& registers, std::vector<bool>& flags, Memory& memory, Stack& stack){
+    registers.A &= registers.A;
+}
+void ANAB_0xA0(Registers& registers, std::vector<bool>& flags, Memory& memory, Stack& stack){
+    registers.A &= registers.B;
+}
+void ANAC_0xA1(Registers& registers, std::vector<bool>& flags, Memory& memory, Stack& stack){
+    registers.A &= registers.C;
+}
+void ANAD_0xA2(Registers& registers, std::vector<bool>& flags, Memory& memory, Stack& stack){
+    registers.A &= registers.D;
+}
+void ANAE_0xA3(Registers& registers, std::vector<bool>& flags, Memory& memory, Stack& stack){
+    registers.A &= registers.E;
+}
+void ANAH_0xA4(Registers& registers, std::vector<bool>& flags, Memory& memory, Stack& stack){
+    registers.A &= registers.H;
+}
+void ANAL_0xA5(Registers& registers, std::vector<bool>& flags, Memory& memory, Stack& stack){
+    registers.A &= registers.L;
+}
+void ANAM_0xA6(Registers& registers, std::vector<bool>& flags, Memory& memory, Stack& stack){
+    addr_t addr = wtod(registers.H, registers.L);
+    registers.A &= memory.get_word(addr); 
+}
+void ANI_0xE6(Registers& registers, std::vector<bool>& flags, Memory& memory, Stack& stack, word_t word){
+    registers.A &= word;
+}
+
+void XRAA_0xA7(Registers& registers, std::vector<bool>& flags, Memory& memory, Stack& stack){
+    registers.A ^= registers.A;
+}
+void XRAB_0xA0(Registers& registers, std::vector<bool>& flags, Memory& memory, Stack& stack){
+    registers.A ^= registers.B;
+}
+void XRAC_0xA1(Registers& registers, std::vector<bool>& flags, Memory& memory, Stack& stack){
+    registers.A ^= registers.C;
+}
+void XRAD_0xA2(Registers& registers, std::vector<bool>& flags, Memory& memory, Stack& stack){
+    registers.A ^= registers.D;
+}
+void XRAE_0xA3(Registers& registers, std::vector<bool>& flags, Memory& memory, Stack& stack){
+    registers.A ^= registers.E;
+}
+void XRAH_0xA4(Registers& registers, std::vector<bool>& flags, Memory& memory, Stack& stack){
+    registers.A ^= registers.H;
+}
+void XRAL_0xA5(Registers& registers, std::vector<bool>& flags, Memory& memory, Stack& stack){
+    registers.A ^= registers.L;
+}
+void XRAM_0xA6(Registers& registers, std::vector<bool>& flags, Memory& memory, Stack& stack){
+    addr_t addr = wtod(registers.H, registers.L);
+    registers.A ^= memory.get_word(addr); 
+}
+void XRI_0xE6(Registers& registers, std::vector<bool>& flags, Memory& memory, Stack& stack, word_t word){
+    registers.A &= word;
 }
