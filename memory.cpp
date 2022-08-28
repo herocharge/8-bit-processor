@@ -1,7 +1,7 @@
 #include <iostream>
 #include "memory.h"
 
-Memory::Memory(addr_t size){
+Memory::Memory(int size){
     memory.assign(size, 0);
     max_addr = size;
 }

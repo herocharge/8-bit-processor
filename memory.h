@@ -9,7 +9,7 @@ class Memory{
         addr_t max_addr;
     public:
         Memory() = default;
-        Memory(addr_t size);
+        Memory(int size);
         word_t get_word(addr_t addr);
         error_t set_word(addr_t addr, word_t word);
         bool is_valid(addr_t addr);

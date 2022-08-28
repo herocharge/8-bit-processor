@@ -47,6 +47,15 @@ error_t CPU::load(std::vector<word_t>& instructions){
     addr_t addr = 0;
     for(auto instruction : instructions){
         memory.set_word(addr, instruction);
+        addr++;
     }
     return 0;
+}
+
+std::vector<word_t> CPU::mem_dump(){
+    std::vector<word_t> dump;
+    for(addr_t i = 0; i < 0xFFFF; i++){
+        dump.push_back(memory.get_word(i));
+    }
+    return dump;
 }

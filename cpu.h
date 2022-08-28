@@ -35,6 +35,7 @@ class CPU{
         error_t load(std::vector<word_t>& instructions);
         word_t fetch();
         error_t execute(addr_t start);
+        std::vector<word_t> mem_dump(void);
         ~CPU();
 };
 #endif
