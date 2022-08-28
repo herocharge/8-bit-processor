@@ -8,6 +8,10 @@ addr_t Program_counter::get_pc(){
     return program_counter;
 }
 
+error_t Program_counter::set_pc(addr_t addr){
+   program_counter = addr;
+}
+
 error_t Program_counter::increment(){
     program_counter++;
 }
