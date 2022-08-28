@@ -7,8 +7,8 @@
 
 typedef uint8_t word_t;
 typedef uint16_t addr_t;
-typedef uint8_t error_t;
 typedef struct Registers Registers;
+typedef int error_t;
 struct Registers
 {
     word_t A;
@@ -19,7 +19,6 @@ struct Registers
     word_t H;
     word_t L;
 };
-typedef void (*voidFunctionType)(Registers& registers, std::vector<bool>& flags, Memory& memory, Stack& stack, Program_counter& pc, word_t word1, word_t word2);
 
 enum flags {
     SIGN = 7,// S - Sign Flag

@@ -14,7 +14,6 @@ class Program_counter
         error_t set_pc(addr_t addr);
         error_t increment();
         error_t add(addr_t off);
-        ~Program_counter();
 };
 
 #endif

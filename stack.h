@@ -9,8 +9,8 @@ class Stack{
         Memory& memory;
         addr_t sp; // Stack pointer, thank me later
     public:
-        Stack() = default;
-        Stack(Memory& mem, addr_t sp);
+        Stack(Memory& mem);
+        error_t init_mem(Memory& mem);
         error_t assign(addr_t w);
         error_t push(word_t w);
         word_t pop();

@@ -310,7 +310,7 @@ void XCHNG_0xEB(Registers& registers, std::vector<bool>& flags, Memory& memory, 
     registers.E = tmp;
 }
 
-void XCHNG_0xEB(Registers& registers, std::vector<bool>& flags, Memory& memory, Stack& stack, Program_counter& pc, word_t word1, word_t word2){
+void XTHL_0xE3(Registers& registers, std::vector<bool>& flags, Memory& memory, Stack& stack, Program_counter& pc, word_t word1, word_t word2){
     word_t tmp = registers.H;
     registers.H = memory.get_word(stack.get_sp() + 1);
     memory.set_word(stack.get_sp() + 1, tmp);
@@ -344,10 +344,10 @@ void ADDL_0x85(Registers& registers, std::vector<bool>& flags, Memory& memory, S
     registers.A += registers.L;
 }
 void ADDM_0x86(Registers& registers, std::vector<bool>& flags, Memory& memory, Stack& stack, Program_counter& pc, word_t word1, word_t word2){
-    addr_t addr = ((addr_t) registers.H) << (sizeof(word_t) * 8) + registers.L;
+    addr_t addr = wtod(registers.H, registers.L);
     registers.A += memory.get_word(addr); 
 }
-void ADI_0xC6(Registers& registers, std::vector<bool>& flags, Memory& memory, Stack& stack, Program_counter& pc, word_t word1, word_t word2){
+void ADI_0xC6word(Registers& registers, std::vector<bool>& flags, Memory& memory, Stack& stack, Program_counter& pc, word_t word1, word_t word2){
     registers.A += word1;
 }
 
@@ -373,10 +373,10 @@ void ADCL_0x8D(Registers& registers, std::vector<bool>& flags, Memory& memory, S
     registers.A += registers.L + flags[0];
 }
 void ADCM_0x8E(Registers& registers, std::vector<bool>& flags, Memory& memory, Stack& stack, Program_counter& pc, word_t word1, word_t word2){
-    addr_t addr = ((addr_t) registers.H) << (sizeof(word_t) * 8) + registers.L;
+    addr_t addr = wtod(registers.H, registers.L);
     registers.A += memory.get_word(addr) + flags[0]; 
 }
-void ACI_0xCE(Registers& registers, std::vector<bool>& flags, Memory& memory, Stack& stack, Program_counter& pc, word_t word1, word_t word2){
+void ACI_0xCEword(Registers& registers, std::vector<bool>& flags, Memory& memory, Stack& stack, Program_counter& pc, word_t word1, word_t word2){
     registers.A += word1 + flags[0];
 }
 
@@ -403,10 +403,10 @@ void SUBL_0x95(Registers& registers, std::vector<bool>& flags, Memory& memory, S
     registers.A -= registers.L;
 }
 void SUBM_0x96(Registers& registers, std::vector<bool>& flags, Memory& memory, Stack& stack, Program_counter& pc, word_t word1, word_t word2){
-    addr_t addr = ((addr_t) registers.H) << (sizeof(word_t) * 8) + registers.L;
+    addr_t addr = wtod(registers.H, registers.L);
     registers.A -= memory.get_word(addr); 
 }
-void SUI_0xD6(Registers& registers, std::vector<bool>& flags, Memory& memory, Stack& stack, Program_counter& pc, word_t word1, word_t word2){
+void SUI_0xD6word(Registers& registers, std::vector<bool>& flags, Memory& memory, Stack& stack, Program_counter& pc, word_t word1, word_t word2){
     registers.A -= word1;
 }
 
@@ -432,10 +432,10 @@ void SBBL_0x9D(Registers& registers, std::vector<bool>& flags, Memory& memory, S
     registers.A -= registers.L + flags[0];
 }
 void SBBM_0x9E(Registers& registers, std::vector<bool>& flags, Memory& memory, Stack& stack, Program_counter& pc, word_t word1, word_t word2){
-    addr_t addr = ((addr_t) registers.H) << (sizeof(word_t) * 8) + registers.L;
+    addr_t addr = wtod(registers.H, registers.L);
     registers.A -= memory.get_word(addr) + flags[0]; 
 }
-void SBI_0xDE(Registers& registers, std::vector<bool>& flags, Memory& memory, Stack& stack, Program_counter& pc, word_t word1, word_t word2){
+void SBI_0xDEword(Registers& registers, std::vector<bool>& flags, Memory& memory, Stack& stack, Program_counter& pc, word_t word1, word_t word2){
     registers.A -= word1 + flags[0];
 }
 
@@ -622,7 +622,7 @@ void ANAM_0xA6(Registers& registers, std::vector<bool>& flags, Memory& memory, S
     addr_t addr = wtod(registers.H, registers.L);
     registers.A &= memory.get_word(addr); 
 }
-void ANI_0xE6(Registers& registers, std::vector<bool>& flags, Memory& memory, Stack& stack, Program_counter& pc, word_t word1, word_t word2){
+void ANI_0xE6word(Registers& registers, std::vector<bool>& flags, Memory& memory, Stack& stack, Program_counter& pc, word_t word1, word_t word2){
     registers.A &= word1;
 }
 
@@ -651,7 +651,7 @@ void XRAM_0xAE(Registers& registers, std::vector<bool>& flags, Memory& memory, S
     addr_t addr = wtod(registers.H, registers.L);
     registers.A ^= memory.get_word(addr); 
 }
-void XRI_0xEE(Registers& registers, std::vector<bool>& flags, Memory& memory, Stack& stack, Program_counter& pc, word_t word1, word_t word2){
+void XRI_0xEEword(Registers& registers, std::vector<bool>& flags, Memory& memory, Stack& stack, Program_counter& pc, word_t word1, word_t word2){
     registers.A &= word1;
 }
 
@@ -681,7 +681,7 @@ void ORAM_0xB6(Registers& registers, std::vector<bool>& flags, Memory& memory, S
     addr_t addr = wtod(registers.H, registers.L);
     registers.A |= memory.get_word(addr); 
 }
-void ORI_0xF6(Registers& registers, std::vector<bool>& flags, Memory& memory, Stack& stack, Program_counter& pc, word_t word1, word_t word2){
+void ORI_0xF6word(Registers& registers, std::vector<bool>& flags, Memory& memory, Stack& stack, Program_counter& pc, word_t word1, word_t word2){
     registers.A |= word1;
 }
 

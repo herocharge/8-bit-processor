@@ -1,12 +1,15 @@
 #include "cpu.h"
 #include "memory.h"
 
-CPU::CPU(addr_t memory_size){
-    memory = Memory(memory_size);
+CPU::CPU() : stack(memory){
+    memory = Memory(0xFFFF);
     pc = Program_counter(0);
-    flags.assign(8, 0); 
-    flags[1] = 1; flags[3] = 0; flags[5] = 0; 
+    flags.assign(8, 0);
+    flags[1] = 1; flags[3] = 0; flags[5] = 0;
+    opcode_handler = Opcode_handler();
 }
+
+CPU::~CPU(){}
 
 word_t CPU::fetch(){
     if(!memory.is_valid(pc.get_pc()));//exit violently
@@ -17,7 +20,33 @@ error_t CPU::execute(addr_t start){
     pc = Program_counter(start);
     while(true){
         word_t instruction = fetch();
-
+        if(instruction == 0x76)break;
+        int param_count = opcode_handler.get_opcode_pcount(instruction);
+        voidFunctionType procedure = opcode_handler.get_opcode_procedure(instruction);
+        if(param_count == 0){
+            procedure(registers, flags, memory, stack, pc, 0, 0);
+        }
+        else if(param_count == 1){
+            pc.increment();
+            word_t word1 = fetch();
+            procedure(registers, flags, memory, stack, pc, word1, 0);
+        }
+        else if(param_count == 2){
+            pc.increment();
+            word_t word1 = fetch();
+            pc.increment();
+            word_t word2 = fetch();
+            procedure(registers, flags, memory, stack, pc, word1, word2);
+        }
         pc.increment();
     }
+    return 0;
+}
+
+error_t CPU::load(std::vector<word_t>& instructions){
+    addr_t addr = 0;
+    for(auto instruction : instructions){
+        memory.set_word(addr, instruction);
+    }
+    return 0;
 }

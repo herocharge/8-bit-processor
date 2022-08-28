@@ -6,6 +6,13 @@ Following this: [https://web.archive.org/web/20180517181048/http://nemesis.lones
 
 Trying to do this essentially - https://github.com/tdinucci/6502-emulator/  but for i8080 // Dont ask why
 
+### Usage
+
+In main.cpp, feed the instructions as hex in the `instructions` vector and then
+> $ make all
+> $ ./a.out
+
+
 ### Goal:
 - simulate a processor?
 - Make a processor + memory + minimal i/o support

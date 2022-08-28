@@ -4,6 +4,8 @@
 #include "global_decl.h"
 #include <unordered_map>
 #include "procedures.h"
+typedef void (*voidFunctionType)(Registers& registers, std::vector<bool>& flags, Memory& memory, Stack& stack, Program_counter& pc, word_t word1, word_t word2);
+
 class Opcode_handler
 {
     private:
