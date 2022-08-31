@@ -19,7 +19,7 @@ int main(){
         0x00,
         0x3C, // A <- A + 1
         0xFE, // cmp A - 0x0A
-        0x0A,   
+        0x07,   
         0xDA, // JC to 0x000C
         0x00,
         0x0C,
