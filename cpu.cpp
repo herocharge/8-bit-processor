@@ -41,6 +41,12 @@ error_t CPU::execute(addr_t start){
             procedure(registers, flags, memory, stack, pc, word1, word2);
         }
         pc.increment();
+        if(interrrupt_addr != 0){
+            addr_t a = pc.get_pc();
+            stack.push(a >> (sizeof(word_t) * 8));             // higher byte
+            stack.push(a &( (1 << (sizeof(word_t) * 8)) - 1)); // lower byte
+            pc.set_pc((addr_t) interrrupt_addr);
+        }
     }
     return 0;
 }

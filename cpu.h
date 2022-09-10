@@ -29,6 +29,7 @@ class CPU{
         Memory memory;
         Program_counter pc;
         Opcode_handler opcode_handler;
+        word_t interrrupt_addr; // Only 8 bits for ISRs start from 0x1
         Stack stack;
     public:
         CPU();

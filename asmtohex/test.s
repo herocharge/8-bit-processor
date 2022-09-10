@@ -1,3 +1,3 @@
-LB
-LDA 11
+;LB
+#LDA 11
 MOVBB

@@ -3,6 +3,7 @@
 #include <string>
 #include <vector>
 #include <map>
+#include <limits>
 using namespace std;
 
 uint8_t conv_to_byte(string s){
@@ -34,6 +35,10 @@ int main(int argc, char** argv){
         string s;
         input_file>>s;
         if(s.length() == 0)continue;
+        if(s[0] == ';' || s[0] == '#'){
+            input_file.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+            continue;
+        }
         if(s != "NOP" && mp[s] == 0){
             if(s.length() == 1)if(!isdigit(s[0])){
                 cout<<"Invalid command "<<s<<endl;
